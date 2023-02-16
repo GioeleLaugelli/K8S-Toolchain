@@ -1,6 +1,4 @@
-# Toolchain
-
-### Eseguita con minikube
+# K8S - Eseguito con minikube
 
 ### Creare il nodo
 minikube start --memory 6000 --cpus 4 --disk-size 50GB
