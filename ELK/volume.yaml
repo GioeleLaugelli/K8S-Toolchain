@@ -18,7 +18,7 @@ metadata:
 spec:
   storageClassName: magazzino-elk
   claimRef:
-    name: elk-pv
+    name: elk-pvc
     namespace: elk
   capacity:
     storage: 10Gi
