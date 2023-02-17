@@ -20,7 +20,7 @@ spec:
       serviceAccountName: elk-admin
       containers:
       - name: elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch
+        image: elasticsearch
         resources:
           limits:
             memory: "1Gi"
