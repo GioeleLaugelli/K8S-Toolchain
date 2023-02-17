@@ -1,7 +1,7 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: spazio-ELK
+  name: magazzino-jenkins
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 ---
@@ -12,7 +12,7 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: spazio-ELK
+  storageClassName: magazzino-jenkins
   claimRef:
     name: jenkins-pv-claim
     namespace: elk
@@ -37,7 +37,7 @@ metadata:
   name: jenkins-pv-claim
   namespace: nduja
 spec:
-  storageClassName: spazio-ELK
+  storageClassName: magazzino-jenkins
   accessModes:
     - ReadWriteOnce
   resources:
