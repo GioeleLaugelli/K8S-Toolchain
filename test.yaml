@@ -19,13 +19,13 @@ spec:
   storageClassName: magazzino-jenkins
   claimRef:
     name: jenkins-pvc
-    namespace: elk
+    namespace: nduja
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
   local:
-    path: /data
+    path: /data/jenkins
   nodeAffinity:
     required:
       nodeSelectorTerms:
