@@ -1,7 +1,7 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: jenkins-space
+  name: spazio-ELK
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 ---
@@ -12,16 +12,24 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: jenkins-space
+  storageClassName: spazio-ELK
   claimRef:
     name: jenkins-pv-claim
-    namespace: nduja
+    namespace: elk
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
   local:
     path: /mnt/jenkins
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - minikube
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -29,7 +37,7 @@ metadata:
   name: jenkins-pv-claim
   namespace: nduja
 spec:
-  storageClassName: jenkins-space
+  storageClassName: spazio-ELK
   accessModes:
     - ReadWriteOnce
   resources:
