@@ -4,10 +4,10 @@ metadata:
   name: elasticsearch
   namespace: elk
   labels:
-    app: elasticsearch
+    app: elk
 spec:
   selector:
-    app: elasticsearch
+    app: elk
   clusterIP: None
   ports:
     - port: 9200
