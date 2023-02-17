@@ -15,7 +15,7 @@ spec:
         app: elk
     spec:
       containers:
-        - name: elasticsearch
+      - name: elasticsearch
         image: docker.elastic.co/elasticsearch/elasticsearch
         resources:
           limits:
@@ -60,10 +60,10 @@ spec:
           securityContext:
             privileged: true
         - name: increase-fd-ulimit
-        image: busybox
-        command: ["sh", "-c", "ulimit -n 65536"]
-        securityContext:
-          privileged: true
+          image: busybox
+          command: ["sh", "-c", "ulimit -n 65536"]
+          securityContext:
+            privileged: true
       volumes:
       - name: elk-data
         persistentVolumeClaim:
