@@ -1,7 +1,7 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: magazzino
+  name: jenkins-space
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 ---
@@ -12,7 +12,7 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: magazzino
+  storageClassName: jenkins-space
   claimRef:
     name: jenkins-pv-claim
     namespace: nduja
@@ -21,15 +21,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   local:
-    path: /mnt
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - minikube
+    path: /var/jenkins
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -37,7 +29,7 @@ metadata:
   name: jenkins-pv-claim
   namespace: nduja
 spec:
-  storageClassName: magazzino
+  storageClassName: jenkins-space
   accessModes:
     - ReadWriteOnce
   resources:
