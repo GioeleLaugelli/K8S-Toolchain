@@ -1,14 +1,51 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: magazzino-jenkins
+  namespace: nduja
+  labels:
+    type: local
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: task-pv-volume
+  name: jenkins-pv
+  namespace: nduja
   labels:
     type: local
 spec:
-  storageClassName: manual
+  storageClassName: magazzino-jenkins
+  claimRef:
+    name: jenkins-pvc
+    namespace: elk
   capacity:
-    storage: 1Gi
+    storage: 10Gi
   accessModes:
     - ReadWriteOnce
-  hostPath:
-    path: "/mnt/dataTest"
+  local:
+    path: /mnt/jenkins
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - minikube
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins-pvc
+  namespace: nduja
+  labels:
+    type: local
+spec:
+  storageClassName: magazzino-jenkins
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
