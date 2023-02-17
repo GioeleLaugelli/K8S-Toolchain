@@ -2,26 +2,30 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: magazzino-jenkins
+  namespace: nduja
+  labels:
+    type: local
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: jenkins-pv-volume
+  name: jenkins-pv
+  namespace: nduja
   labels:
     type: local
 spec:
   storageClassName: magazzino-jenkins
   claimRef:
-    name: jenkins-pv-claim
-    namespace: elk
+    name: jenkins-pvc
+    namespace: nduja
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
   local:
-    path: /mnt
+    path: /data/jenkins
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -34,8 +38,10 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jenkins-pv-claim
+  name: jenkins-pvc
   namespace: nduja
+  labels:
+    type: local
 spec:
   storageClassName: magazzino-jenkins
   accessModes:
