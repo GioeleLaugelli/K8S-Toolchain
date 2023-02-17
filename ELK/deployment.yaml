@@ -8,15 +8,15 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: elasticsearch
+      app: elk
   template:
     metadata:
       labels:
-        app: elasticsearch
+        app: elk
     spec:
       containers:
-      - name: elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+        - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch
         resources:
           limits:
             cpu: 1000m
@@ -30,7 +30,7 @@ spec:
           name: inter-node
           protocol: TCP
         volumeMounts:
-        - name: data
+        - name: elk-data
           mountPath: /usr/share/elasticsearch/data
         env:
           - name: cluster.name
@@ -46,32 +46,25 @@ spec:
           - name: ES_JAVA_OPTS
             value: "-Xms512m -Xmx512m"
       initContainers:
-      - name: fix-permissions
-        image: busybox
-        command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
-        securityContext:
-          privileged: true
-        volumeMounts:
-        - name: data
-          mountPath: /usr/share/elasticsearch/data
-      - name: increase-vm-max-map
-        image: busybox
-        command: ["sysctl", "-w", "vm.max_map_count=262144"]
-        securityContext:
-          privileged: true
-      - name: increase-fd-ulimit
+        - name: fix-permissions
+          image: busybox
+          command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
+          securityContext:
+            privileged: true
+          volumeMounts:
+          - name: elk-data
+            mountPath: /usr/share/elasticsearch/data
+        - name: increase-vm-max-map
+          image: busybox
+          command: ["sysctl", "-w", "vm.max_map_count=262144"]
+          securityContext:
+            privileged: true
+        - name: increase-fd-ulimit
         image: busybox
         command: ["sh", "-c", "ulimit -n 65536"]
         securityContext:
           privileged: true
-  volumeClaimTemplates:
-  - metadata:
-      name: data
-      labels:
-        app: elasticsearch
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: do-block-storage
-      resources:
-        requests:
-          storage: 10Gi
+      volumes:
+      - name: elk-data
+        persistentVolumeClaim:
+            claimName: elk-pvc
