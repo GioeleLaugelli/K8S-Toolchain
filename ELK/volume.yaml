@@ -21,7 +21,7 @@ spec:
     name: elk-pvc
     namespace: elk
   capacity:
-    storage: 10Gi
+    storage: 2Gi
   accessModes:
     - ReadWriteOnce
   local:
