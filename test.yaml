@@ -25,7 +25,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   local:
-    path: /mnt/jenkins
+    path: /data/jenkins
   nodeAffinity:
     required:
       nodeSelectorTerms:
