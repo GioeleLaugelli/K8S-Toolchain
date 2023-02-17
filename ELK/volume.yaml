@@ -5,7 +5,6 @@ metadata:
   namespace: elk
   labels:
     type: local
-    app: elk
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 ---
@@ -16,7 +15,6 @@ metadata:
   namespace: elk
   labels:
     type: local
-    app: elk
 spec:
   storageClassName: magazzino-elk
   claimRef:
@@ -44,7 +42,6 @@ metadata:
   namespace: elk
   labels:
     type: local
-    app: elk
 spec:
   storageClassName: magazzino-elk
   accessModes:
