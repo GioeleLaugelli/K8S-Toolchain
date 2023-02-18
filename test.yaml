@@ -85,7 +85,7 @@ spec:
       volumes:
         - name: elk-data
           persistentVolumeClaim:
-              claimName: elk-pvc
+            claimName: elk-pvc
 ---
 apiVersion: v1
 kind: Service
