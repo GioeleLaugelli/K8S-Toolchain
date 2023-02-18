@@ -1,3 +1,51 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: magazzino-elk
+  labels:
+    type: local
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elk-pv
+  labels:
+    type: local
+spec:
+  storageClassName: magazzino-elk
+  claimRef:
+    name: elk-pvc
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: /data/elk
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - minikube
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elk-pvc
+  labels:
+    type: local
+spec:
+  storageClassName: magazzino-elk
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -90,51 +138,3 @@ spec:
     name: webinterface
   selector:
     app: kibana
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: magazzino-elk
-  labels:
-    type: local
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: elk-pv
-  labels:
-    type: local
-spec:
-  storageClassName: magazzino-elk
-  claimRef:
-    name: elk-pvc
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  local:
-    path: /data/elk
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - minikube
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: elk-pvc
-  labels:
-    type: local
-spec:
-  storageClassName: magazzino-elk
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 3Gi
