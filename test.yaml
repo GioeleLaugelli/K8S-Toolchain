@@ -111,7 +111,7 @@ spec:
   claimRef:
     name: elk-pvc
   capacity:
-    storage: 2Gi
+    storage: 10Gi
   accessModes:
     - ReadWriteOnce
   local:
@@ -137,4 +137,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: 3Gi
